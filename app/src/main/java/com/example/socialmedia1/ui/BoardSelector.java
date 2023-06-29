@@ -1,14 +1,16 @@
-package com.example.socialmedia1;
+package com.example.socialmedia1.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import com.example.socialmedia1.R;
+
+public class BoardSelector extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_board_selector);
     }
 }

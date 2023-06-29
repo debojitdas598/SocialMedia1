@@ -16,16 +16,16 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".BoardSelector"
+            android:name=".ui.BoardSelector"
             android:exported="false" />
         <activity
-            android:name=".Signup"
+            android:name=".ui.Signup"
             android:exported="true" />
         <activity
-            android:name=".Login"
+            android:name=".ui.Login"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
