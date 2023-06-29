@@ -7,6 +7,10 @@
         android:title="User" />
 
     <item
+        android:id="@+id/placeholder"
+        android:title=""/>
+
+    <item
         android:id="@+id/miSettings"
         android:icon="@drawable/ic_settings"
         android:iconTint="@color/black"
