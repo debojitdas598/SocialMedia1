@@ -20,18 +20,13 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fab);
 
         fab.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        showEditDialog();
-                    }
-                }
+                view -> showEditDialog()
         );
     }
 
     private void showEditDialog() {
         FragmentManager fm = getSupportFragmentManager();
         PostDialogFragment editNameDialogFragment = PostDialogFragment.newInstance("Some Title");
-        editNameDialogFragment.show(fm, "fragment_edit_name");
+        editNameDialogFragment.show(fm, "fragment_dialog");
     }
 }
