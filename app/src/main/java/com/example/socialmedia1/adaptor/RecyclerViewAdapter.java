@@ -52,7 +52,5 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             postid.setText(item.getText1());
             posttext.setText(item.getText2());
         }
-
-
     }
 }

@@ -33,7 +33,7 @@ public class Login extends AppCompatActivity {
         login = findViewById(R.id.login);
         signup = findViewById(R.id.signup);
         email = findViewById(R.id.emailtxt);
-        password = findViewById(R.id.passwordtxt);
+        password = findViewById(R.id.etPasswordLogin);
         mAuth = FirebaseAuth.getInstance();
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +54,7 @@ public class Login extends AppCompatActivity {
                     return;
                 }
 
-                if (TextUtils.isEmpty(emailtxt)) {
+                if (TextUtils.isEmpty(passwordtxt)) {
                     Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -65,6 +65,10 @@ public class Login extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_SHORT).show();
+
+
+                                    Intent intent = new Intent(Login.this, MainActivity.class);
+                                    startActivity(intent);
                                     // You can perform any additional actions here, such as navigating to another activity.
                                 } else {
                                     Toast.makeText(getApplicationContext(), "Login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();

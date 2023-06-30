@@ -88,7 +88,7 @@ public class PostFragment extends Fragment {
         adapter.notifyDataSetChanged();
 
         adapter.notifyItemChanged(dataList.size()-1);
-
+        adapter.notifyItemRangeChanged(0, dataList.size()-1);
 
 
         return view;
