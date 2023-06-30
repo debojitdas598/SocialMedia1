@@ -42,15 +42,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView postid;
         private TextView posttext;
+        private TextView timestamptext;
         public ViewHolder(@NonNull View itemView){
             super(itemView);
             postid = itemView.findViewById(R.id.postid);
             posttext = itemView.findViewById(R.id.posttext);
-
+            timestamptext = itemView.findViewById(R.id.timestamp);
         }
         public void bind(DataItem item) {
             postid.setText(item.getText1());
             posttext.setText(item.getText2());
+            timestamptext.setText(item.getText3());
         }
     }
 }

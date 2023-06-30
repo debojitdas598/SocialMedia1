@@ -25,13 +25,32 @@
         android:orientation="vertical"
         >
 
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="POST ID"
+        android:layout_weight="1"
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="POST ID"
-                android:layout_marginTop="10dp"
-                android:id="@+id/postid"/>
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="12dp"
+        android:id="@+id/postid"/>
+<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="12dp"
+    android:textAlignment="viewEnd"
+        android:text="Timestamp"
+        android:id="@+id/timestamp"/>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
+
          <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

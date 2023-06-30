@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +17,20 @@ import com.example.socialmedia1.adaptor.DataItem;
 import com.example.socialmedia1.adaptor.RecyclerViewAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -105,7 +114,33 @@ public class PostFragment extends Fragment {
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 for(DocumentSnapshot document : queryDocumentSnapshots){
                     String documentId = document.getId().toString();
-                    dataList.add(new DataItem(documentId,"11"));
+                    String posttext = document.getString("post text");
+                    Timestamp timestamp = document.getTimestamp("time");
+                    Instant instant = timestamp.toDate().toInstant();
+                    LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+                    DateTimeFormatter formatterfull = DateTimeFormatter.ofPattern("dd'th' MMM ,yy h:mm a");
+                    DateTimeFormatter formatterdate = DateTimeFormatter.ofPattern("dd'th' MMM ,yy");
+                    DateTimeFormatter formattertime = DateTimeFormatter.ofPattern("h:mm a");
+
+                    String formattedfullString = dateTime.format(formatterfull);
+                    String formatteddateString = dateTime.format(formatterdate);
+                    String formattedtimeString = dateTime.format(formattertime);
+
+                    //code to get todays and yesterdays date
+                    LocalDate today = LocalDate.now();
+                    LocalDate yesterday = today.minusDays(1);
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd'th' MMM, yy");
+                    String todayStr = today.format(formatterdate);
+                    String yesterdayStr = yesterday.format(formatterdate);
+                    if(todayStr.equals(formatteddateString)){
+                        dataList.add(new DataItem(documentId,posttext,"Today at "+formattedtimeString));
+                    }
+                    else if(yesterdayStr.equals(formatteddateString)){
+                        dataList.add(new DataItem(documentId,posttext,"Yesterday at "+formattedtimeString));
+                    }
+                    else{
+                        dataList.add(new DataItem(documentId,posttext,formattedfullString));
+                    }
 
                 }
 
