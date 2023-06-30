@@ -1,7 +1,5 @@
 package com.example.socialmedia1.ui;
 
-import static com.example.socialmedia1.utils.Constants.FIREBASE_URL;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -26,7 +24,7 @@ public class Login extends AppCompatActivity {
     ImageView login,signup;
     EditText email,password,confirmpassword, username;
     FirebaseAuth mAuth;
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl(FIREBASE_URL);
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://socialmedia1-310bc-default-rtdb.firebaseio.com/");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +54,7 @@ public class Login extends AppCompatActivity {
                     return;
                 }
 
-                if (TextUtils.isEmpty(emailtxt)) {
+                if (TextUtils.isEmpty(passwordtxt)) {
                     Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
                     return;
                 }
