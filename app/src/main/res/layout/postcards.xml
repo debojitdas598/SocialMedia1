@@ -8,8 +8,8 @@
     android:id="@+id/cv"
 
     app:flow_verticalGap="3dp"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
 
     app:cardPreventCornerOverlap="true"
 

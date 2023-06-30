@@ -15,6 +15,7 @@ import com.example.socialmedia1.PostFragment;
 import com.example.socialmedia1.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.FirebaseApp;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fab);
         usernavbutton = findViewById(R.id.feed);
         settingsnavbutton = findViewById(R.id.usersettings);
-
+        FirebaseApp.initializeApp(this);
         fragmentManager = getSupportFragmentManager();
         fragment = new PostFragment();
         FragmentTransaction transaction = fragmentManager.beginTransaction();

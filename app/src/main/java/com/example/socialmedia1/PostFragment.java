@@ -2,11 +2,27 @@ package com.example.socialmedia1;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.example.socialmedia1.adaptor.DataItem;
+import com.example.socialmedia1.adaptor.RecyclerViewAdapter;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,10 +71,54 @@ public class PostFragment extends Fragment {
         }
     }
 
+    private RecyclerView recyclerView;
+    private RecyclerViewAdapter adapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_post, container, false);
+        View view = inflater.inflate(R.layout.fragment_post, container, false);
+        recyclerView = view.findViewById(R.id.recyclerview);
+        adapter = new RecyclerViewAdapter();
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        List<DataItem> dataList = getData();
+        adapter.setData(dataList);
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+        adapter.notifyItemChanged(dataList.size()-1);
+
+
+
+        return view;
+    }
+    private List<DataItem> getData() {
+        List<DataItem> dataList = new ArrayList<>();
+        // Add your data to the list
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference collectionRef = db.collection("dsiblr");
+
+        collectionRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for(DocumentSnapshot document : queryDocumentSnapshots){
+                    String documentId = document.getId().toString();
+                    dataList.add(new DataItem(documentId,"11"));
+
+                }
+
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getView().getContext(), "Failed to fetch", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        adapter.notifyDataSetChanged();
+        adapter.notifyItemChanged(dataList.size()-1);
+        return dataList;
     }
 }
