@@ -122,9 +122,9 @@ public class PostFragment extends Fragment {
                     DateTimeFormatter formatterdate = DateTimeFormatter.ofPattern("dd'th' MMM ,yy");
                     DateTimeFormatter formattertime = DateTimeFormatter.ofPattern("h:mm a");
 
-                    String formattedfullString = dateTime.format(formatterfull);
-                    String formatteddateString = dateTime.format(formatterdate);
-                    String formattedtimeString = dateTime.format(formattertime);
+                    String formattedfullString = dateTime.format(formatterfull); //full date in dd'th' MMM ,yy h:mm a format
+                    String formatteddateString = dateTime.format(formatterdate); //date only in dd'th' MMM ,yy format
+                    String formattedtimeString = dateTime.format(formattertime); //time only in h:mm a format
 
                     //code to get todays and yesterdays date
                     LocalDate today = LocalDate.now();

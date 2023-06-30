@@ -58,12 +58,6 @@
              android:id="@+id/posttext"
              android:layout_marginTop="20dp"/>
 
-
-
-
-
-
-
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 
