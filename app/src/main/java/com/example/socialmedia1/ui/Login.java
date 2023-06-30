@@ -1,5 +1,7 @@
 package com.example.socialmedia1.ui;
 
+import static com.example.socialmedia1.utils.Constants.FIREBASE_URL;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,7 +26,7 @@ public class Login extends AppCompatActivity {
     ImageView login,signup;
     EditText email,password,confirmpassword, username;
     FirebaseAuth mAuth;
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://socialmedia1-310bc-default-rtdb.firebaseio.com/");
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl(FIREBASE_URL);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +35,7 @@ public class Login extends AppCompatActivity {
         login = findViewById(R.id.login);
         signup = findViewById(R.id.signup);
         email = findViewById(R.id.emailtxt);
-        password = findViewById(R.id.passwordtxt);
+        password = findViewById(R.id.etPasswordLogin);
         mAuth = FirebaseAuth.getInstance();
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +67,10 @@ public class Login extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_SHORT).show();
+
+
+                                    Intent intent = new Intent(Login.this, MainActivity.class);
+                                    startActivity(intent);
                                     // You can perform any additional actions here, such as navigating to another activity.
                                 } else {
                                     Toast.makeText(getApplicationContext(), "Login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();

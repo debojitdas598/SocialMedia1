@@ -7,39 +7,40 @@
     android:orientation="vertical"
     tools:context=".ui.Login">
 
-    <TextView
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:layout_marginHorizontal="40dp"
-        android:textSize="16dp"
-        android:text="Email"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/ediitext_bg"
-        android:id="@+id/emailtxt"
+        android:hint="E-Mail"
+        android:inputType="textEmailAddress"
+        android:layout_marginTop="150dp"
+        app:layout_constraintBottom_toTopOf="@+id/etPasswordLoginLayout"
+        android:layout_marginHorizontal="40dp">
 
-        android:layout_marginHorizontal="40dp"
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:id="@+id/emailtxt"
+            android:inputType="textEmailAddress" />
 
-        />
-    <TextView
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/etPasswordLoginLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="Enter Password..."
+        android:inputType="textPassword"
         android:layout_marginTop="20dp"
-        android:layout_marginHorizontal="40dp"
-        android:textSize="16dp"
-        android:text="Password"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        android:id="@+id/passwordtxt"
+        android:layout_marginHorizontal="40dp">
 
-        android:background="@drawable/ediitext_bg"
-        android:layout_marginHorizontal="40dp"
-        />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etPasswordLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -54,6 +55,7 @@
             android:id="@+id/login"
             android:layout_gravity="center"
             android:src="@drawable/loginbutton"/>
+
         <ImageView
             android:layout_width="100dp"
             android:layout_height="40dp"
