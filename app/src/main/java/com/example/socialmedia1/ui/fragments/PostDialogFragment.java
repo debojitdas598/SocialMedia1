@@ -1,4 +1,4 @@
-package com.example.socialmedia1;
+package com.example.socialmedia1.ui.fragments;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,6 +11,8 @@ import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import com.example.socialmedia1.R;
 
 public class PostDialogFragment extends DialogFragment {
     private EditText mEditText;
