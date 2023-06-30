@@ -1,4 +1,4 @@
-package com.example.socialmedia1.adaptor;
+package com.example.socialmedia1.models;
 
 public class DataItem {
     private String text1;

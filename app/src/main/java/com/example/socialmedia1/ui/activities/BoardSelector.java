@@ -1,4 +1,4 @@
-package com.example.socialmedia1.ui;
+package com.example.socialmedia1.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 

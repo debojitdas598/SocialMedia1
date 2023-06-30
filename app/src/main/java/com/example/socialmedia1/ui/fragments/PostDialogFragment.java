@@ -1,4 +1,4 @@
-package com.example.socialmedia1;
+package com.example.socialmedia1.ui.fragments;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -26,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import com.example.socialmedia1.R;
 
 public class PostDialogFragment extends DialogFragment {
     private EditText mEditText;

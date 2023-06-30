@@ -1,5 +1,6 @@
-package com.example.socialmedia1.adaptor;
+package com.example.socialmedia1.ui.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,13 +10,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.socialmedia1.R;
+import com.example.socialmedia1.models.DataItem;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+    private Context context;
+    private List<DataItem> data;
+    public RecyclerViewAdapter(Context context, List<DataItem> data){
+        this.context = context;
+        this.data = data;
+    }
 
-    private List<DataItem> data = new ArrayList<>();
     public void setData(List<DataItem> data) {
         this.data = data;
         notifyDataSetChanged();
@@ -36,7 +42,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return data != null ? data.size() : 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
