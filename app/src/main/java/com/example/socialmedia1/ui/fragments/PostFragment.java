@@ -31,6 +31,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class PostFragment extends Fragment {
 
@@ -57,6 +58,8 @@ public class PostFragment extends Fragment {
     }
     private void getData() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
         CollectionReference collectionRef = db.collection("dsiblr");
 
         collectionRef.orderBy("time", Query.Direction.DESCENDING).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -67,32 +70,14 @@ public class PostFragment extends Fragment {
                     String documentId = document.getId().toString();
                     String posttext = document.getString("post text");
                     Timestamp timestamp = document.getTimestamp("time");
-                    Instant instant = timestamp.toDate().toInstant();
-                    LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-                    DateTimeFormatter formatterfull = DateTimeFormatter.ofPattern("dd'th' MMM ,yy h:mm a");
-                    DateTimeFormatter formatterdate = DateTimeFormatter.ofPattern("dd'th' MMM ,yy");
-                    DateTimeFormatter formattertime = DateTimeFormatter.ofPattern("h:mm a");
 
-                    String formattedfullString = dateTime.format(formatterfull);
-                    String formatteddateString = dateTime.format(formatterdate);
-                    String formattedtimeString = dateTime.format(formattertime);
+
+                    String timeRequired = setDate(timestamp);
+                    dataList.add(new DataItem(documentId,posttext,timeRequired));
 
                     //code to get todays and yesterdays date
-                    LocalDate today = LocalDate.now();
-                    LocalDate yesterday = today.minusDays(1);
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd'th' MMM, yy");
-                    String todayStr = today.format(formatterdate);
-                    String yesterdayStr = yesterday.format(formatterdate);
-                    if(todayStr.equals(formatteddateString)){
-                        dataList.add(new DataItem(documentId,posttext,"Today at "+formattedtimeString));
-                    }
-                    else if(yesterdayStr.equals(formatteddateString)){
-                        dataList.add(new DataItem(documentId,posttext,"Yesterday at "+formattedtimeString));
-                    }
-                    else{
-                        dataList.add(new DataItem(documentId,posttext,formattedfullString));
-                    }
-                    System.out.println(dataList.toString() + " here");
+
+
                 }
                 adapter.setData(dataList);
             }
@@ -102,6 +87,35 @@ public class PostFragment extends Fragment {
                 Toast.makeText(getView().getContext(), "Failed to fetch", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+
+
+    private String setDate(Timestamp timestamp){
+        Instant instant = timestamp.toDate().toInstant();
+        LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        DateTimeFormatter formatterfull = DateTimeFormatter.ofPattern("dd'th' MMM ,yy h:mm a");
+        DateTimeFormatter formatterdate = DateTimeFormatter.ofPattern("dd'th' MMM ,yy");
+        DateTimeFormatter formattertime = DateTimeFormatter.ofPattern("h:mm a");
+
+        String formattedfullString = dateTime.format(formatterfull);
+        String formatteddateString = dateTime.format(formatterdate);
+        String formattedtimeString = dateTime.format(formattertime);
+
+        LocalDate today = LocalDate.now();
+        LocalDate yesterday = today.minusDays(1);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd'th' MMM, yy");
+        String todayStr = today.format(formatterdate);
+        String yesterdayStr = yesterday.format(formatterdate);
+        if(todayStr.equals(formatteddateString)){
+            return "Today at " + formattedtimeString;
+        }
+        else if(yesterdayStr.equals(formatteddateString)){
+            return "Yesterday at "+formattedtimeString;
+        }
+        else{
+            return formattedfullString;
+        }
     }
 
 }
