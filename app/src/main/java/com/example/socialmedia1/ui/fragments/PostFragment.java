@@ -58,8 +58,8 @@ public class PostFragment extends Fragment {
     private void getData() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference collectionRef = db.collection("dsiblr");
-        collectionRef.orderBy("time", Query.Direction.DESCENDING);
-        collectionRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+
+        collectionRef.orderBy("time", Query.Direction.DESCENDING).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 List<DataItem> dataList = new ArrayList<>();
