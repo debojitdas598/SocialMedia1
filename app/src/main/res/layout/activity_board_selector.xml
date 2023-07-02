@@ -24,11 +24,11 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
-                android:id="@+id/dsiblr"
+                android:id="@+id/dsiblrcard"
                 app:cardElevation="5dp"
                 app:cardCornerRadius="10dp">
 
@@ -40,7 +40,26 @@
                     android:textColor="@color/black"
                     android:layout_margin="12dp"/>
 
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
+
+ <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:id="@+id/bmscecard"
+     android:layout_marginTop="15dp"
+                app:cardElevation="5dp"
+                app:cardCornerRadius="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="BMS College of Engineering, Bangalore"
+                    android:textSize="15dp"
+                    android:textColor="@color/black"
+                    android:layout_margin="12dp"/>
+
+            </com.google.android.material.card.MaterialCardView>
 
 
 

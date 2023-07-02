@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="170dp"
+    android:layout_height="wrap_content"
     android:id="@+id/cv"
 
     app:flow_verticalGap="3dp"
@@ -58,7 +58,32 @@
              android:id="@+id/posttext"
              android:layout_marginTop="20dp"/>
 
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="40dp">
+
+            <ImageView
+                android:layout_width="90dp"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:id="@+id/likebtn"
+                android:src="@drawable/unlikebutton"/>
+
+            <ImageView
+                android:layout_width="90dp"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:id="@+id/replybtn"
+                android:src="@drawable/reply"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+
 
 
 </androidx.cardview.widget.CardView>
