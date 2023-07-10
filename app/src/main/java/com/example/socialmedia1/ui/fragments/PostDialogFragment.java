@@ -73,6 +73,7 @@ public class PostDialogFragment extends DialogFragment {
                     Map<String, Object> data = new HashMap<>();
                     data.put("post text", postText);
                     data.put("time", com.google.firebase.Timestamp.now());
+                    data.put("likes", 0);
                     createDocument(data, view.getContext());
                 }
             }

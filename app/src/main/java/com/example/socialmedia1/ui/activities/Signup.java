@@ -86,6 +86,8 @@ public class Signup extends AppCompatActivity {
                                     databaseReference.child(userId).child("username").setValue(usernameTxt);
                                     databaseReference.child(userId).child("email").setValue(emailTxt);
                                     databaseReference.child(userId).child("password").setValue(passwordTxt);
+                                    databaseReference.child(userId).child("likes").child("").setValue(0);
+
 
                                     Toast.makeText(Signup.this, "Account Created.", Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(Signup.this, Login.class));

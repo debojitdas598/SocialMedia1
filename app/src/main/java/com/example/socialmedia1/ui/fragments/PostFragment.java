@@ -70,10 +70,10 @@ public class PostFragment extends Fragment {
                     String documentId = document.getId().toString();
                     String posttext = document.getString("post text");
                     Timestamp timestamp = document.getTimestamp("time");
-
+                    long likes = (long) document.get("likes");
 
                     String timeRequired = setDate(timestamp);
-                    dataList.add(new DataItem(documentId,posttext,timeRequired));
+                    dataList.add(new DataItem(documentId,posttext,timeRequired,likes));
 
                     //code to get todays and yesterdays date
 
