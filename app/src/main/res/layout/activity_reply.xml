@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.Reply">
+
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cv"
+
+        app:flow_verticalGap="3dp"
+
+        app:cardPreventCornerOverlap="true"
+
+        android:elevation="3dp"
+        app:cardCornerRadius="7dp"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="10dp"
+        app:cardElevation="5dp">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="POST ID"
+                    android:layout_weight="1"
+
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="12dp"
+                    android:id="@+id/postid"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="12dp"
+                    android:textAlignment="viewEnd"
+                    android:text="Timestamp"
+                    android:id="@+id/timestamp"/>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="POST"
+                android:id="@+id/posttext"
+                android:layout_marginTop="20dp"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="40dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="200"
+                    android:layout_marginRight="10dp"
+                    android:id="@+id/totallikes"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="17dp"
+
+                    />
+                <ImageView
+                    android:layout_width="90dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="-10dp"
+                    android:id="@+id/likebtn"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/unlikebutton"/>
+
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

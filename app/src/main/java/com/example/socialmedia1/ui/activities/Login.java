@@ -51,6 +51,7 @@ public class Login extends AppCompatActivity {
 
                 if (validateInput(email, password)) {
                     signInUser(email, password);
+
                 }
             }
         });
@@ -93,7 +94,7 @@ public class Login extends AppCompatActivity {
     }
 
     private void navigateToMainActivity() {
-        Intent intent = new Intent(Login.this, MainActivity.class);
+        Intent intent = new Intent(Login.this, BoardSelector.class);
         startActivity(intent);
         finish(); // Optional: Finish the LoginActivity to prevent the user from returning to it using the back button
     }

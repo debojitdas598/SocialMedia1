@@ -17,6 +17,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activities.Reply"
+            android:exported="false" />
+        <activity
             android:name=".ui.activities.BoardSelector"
             android:exported="true" />
         <activity

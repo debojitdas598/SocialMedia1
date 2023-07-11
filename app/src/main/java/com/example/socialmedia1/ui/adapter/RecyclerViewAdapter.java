@@ -1,6 +1,7 @@
 package com.example.socialmedia1.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,10 +12,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.socialmedia1.R;
 import com.example.socialmedia1.models.DataItem;
+import com.example.socialmedia1.ui.activities.Reply;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -59,6 +62,28 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         FirebaseUser user = auth.getCurrentUser();
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
             likehandler(holder);
+            switchtoreply(holder);
+    }
+
+    private void switchtoreply(ViewHolder holder) {
+        holder.cardView.setOnClickListener(v -> {
+
+            Intent intent = new Intent(context, Reply.class);
+            intent.putExtra("postid",holder.postid.getText());
+            intent.putExtra("posttext",holder.posttext.getText());
+            intent.putExtra("likes",holder.likecount.getText());
+            intent.putExtra("timestamp",holder.timestamptext.getText());
+            context.startActivity(intent);
+        });
+        holder.replybtn.setOnClickListener(v -> {
+            Intent intent = new Intent(context, Reply.class);
+            intent.putExtra("postid",holder.postid.getText());
+            intent.putExtra("posttext",holder.posttext.getText());
+            intent.putExtra("likes",holder.likecount.getText());
+            intent.putExtra("timestamp",holder.timestamptext.getText());
+            context.startActivity(intent);
+        });
+
     }
 
     private void likehandler(ViewHolder holder) {
@@ -180,6 +205,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         private TextView timestamptext;
         private ImageView likebtn,replybtn;
         private TextView likecount;
+        private CardView cardView;
         public ViewHolder(@NonNull View itemView){
             super(itemView);
             postid = itemView.findViewById(R.id.postid);
@@ -188,6 +214,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             likebtn = itemView.findViewById(R.id.likebtn);
             replybtn = itemView.findViewById(R.id.replybtn);
             likecount = itemView.findViewById(R.id.totallikes);
+            cardView = itemView.findViewById(R.id.cv);
         }
         public void bind(DataItem item) {
             postid.setText(item.getText1());
