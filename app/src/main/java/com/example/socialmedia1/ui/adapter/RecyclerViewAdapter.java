@@ -52,6 +52,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.postcards, parent, false);
         return new ViewHolder(view);
+
     }
 
     @Override
@@ -68,11 +69,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private void switchtoreply(ViewHolder holder) {
         holder.cardView.setOnClickListener(v -> {
 
+
+
             Intent intent = new Intent(context, Reply.class);
             intent.putExtra("postid",holder.postid.getText());
             intent.putExtra("posttext",holder.posttext.getText());
             intent.putExtra("likes",holder.likecount.getText());
             intent.putExtra("timestamp",holder.timestamptext.getText());
+            intent.putExtra("likeindicator",holder.likeindicator);
+
             context.startActivity(intent);
         });
         holder.replybtn.setOnClickListener(v -> {
@@ -81,6 +86,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             intent.putExtra("posttext",holder.posttext.getText());
             intent.putExtra("likes",holder.likecount.getText());
             intent.putExtra("timestamp",holder.timestamptext.getText());
+            intent.putExtra("likeindicator",holder.likeindicator);
             context.startActivity(intent);
         });
 
@@ -179,11 +185,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 if(snapshot.exists()){
                     holder.likebtn.setImageResource(R.drawable.likedbutton);
                     holder.likecount.setTextColor(Color.parseColor("#D90000"));
+                    holder.likeindicator=1;
                 }
                 else
                 {
                     holder.likebtn.setImageResource(R.drawable.unlikebutton);
                     holder.likecount.setTextColor(Color.parseColor("#000000"));
+                    holder.likeindicator = 0;
                 }
             }
 
@@ -205,6 +213,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         private TextView timestamptext;
         private ImageView likebtn,replybtn;
         private TextView likecount;
+        private int likeindicator =0;
         private CardView cardView;
         public ViewHolder(@NonNull View itemView){
             super(itemView);
