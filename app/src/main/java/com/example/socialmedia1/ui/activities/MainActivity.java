@@ -69,4 +69,8 @@ public class MainActivity extends AppCompatActivity {
         PostDialogFragment editNameDialogFragment = PostDialogFragment.newInstance("Some Title");
         editNameDialogFragment.show(fm, "fragment_dialog");
     }
+
+    public void finishActivity() {
+        finish();
+    }
 }

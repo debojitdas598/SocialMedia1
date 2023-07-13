@@ -86,7 +86,9 @@ public class Signup extends AppCompatActivity {
                                     databaseReference.child(userId).child("username").setValue(usernameTxt);
                                     databaseReference.child(userId).child("email").setValue(emailTxt);
                                     databaseReference.child(userId).child("password").setValue(passwordTxt);
-                                    databaseReference.child(userId).child("likes").child("").setValue(0);
+                                    databaseReference.child(userId).child("likes").child("nullplaceholder").setValue(0);
+                                    databaseReference.child(userId).child("replies").child("nullplaceholder").setValue(0);
+                                    databaseReference.child(userId).child("posts").child("nullplaceholder").setValue(0);
 
 
                                     Toast.makeText(Signup.this, "Account Created.", Toast.LENGTH_SHORT).show();

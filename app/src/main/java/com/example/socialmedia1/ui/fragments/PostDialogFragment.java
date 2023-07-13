@@ -18,6 +18,10 @@ import com.example.socialmedia1.R;
 import com.example.socialmedia1.utils.VibrationUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
@@ -39,6 +43,7 @@ public class PostDialogFragment extends DialogFragment {
     private CollectionReference collectionRef;
     private EditText posttxt;
     private ImageView addpost, addimage;
+    private DatabaseReference databaseReference;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,12 +95,19 @@ public class PostDialogFragment extends DialogFragment {
     }
 
     private void createDocument(Map<String, Object> data, Context context) {
-       firestore.collection("dsiblr").document(docName())
+
+        String docname = postName();
+       firestore.collection("dsiblr").document(docname)
                .set(data)
                .addOnSuccessListener(new OnSuccessListener<Void>() {
                    @Override
                    public void onSuccess(Void unused) {
                        Toast.makeText(context, "Posted!", Toast.LENGTH_SHORT).show();
+                       databaseReference = FirebaseDatabase.getInstance().getReference().child("users");
+                       FirebaseAuth auth = FirebaseAuth.getInstance();
+                       FirebaseUser user = auth.getCurrentUser();
+                       String userId = user.getUid();
+                       databaseReference.child(userId).child("posts").child(docname).setValue(posttxt.getText().toString().trim());
                        dismiss();
                    }
                })
@@ -105,9 +117,23 @@ public class PostDialogFragment extends DialogFragment {
                        Toast.makeText(context, "Could not post.", Toast.LENGTH_SHORT).show();
                    }
                });
+
+        firestore.collection("dsiblr").document(docname).collection("replies").document("nulldoc_placeholder").set(new HashMap<>())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
     }
 
-    private String docName(){
+    private String postName(){
         Random random = new Random();
         String randomName = "Anonym"+String.valueOf(random.nextInt(900000) + 100000);
         return randomName;

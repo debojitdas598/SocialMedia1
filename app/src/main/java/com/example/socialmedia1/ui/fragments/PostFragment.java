@@ -58,10 +58,7 @@ public class PostFragment extends Fragment {
     }
     private void getData() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-
         CollectionReference collectionRef = db.collection("dsiblr");
-
         collectionRef.orderBy("time", Query.Direction.DESCENDING).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -74,10 +71,6 @@ public class PostFragment extends Fragment {
 
                     String timeRequired = setDate(timestamp);
                     dataList.add(new DataItem(documentId,posttext,timeRequired,likes));
-
-                    //code to get todays and yesterdays date
-
-
                 }
                 adapter.setData(dataList);
             }
@@ -90,6 +83,8 @@ public class PostFragment extends Fragment {
     }
 
 
+
+    //code to get todays and yesterdays date
 
     private String setDate(Timestamp timestamp){
         Instant instant = timestamp.toDate().toInstant();
