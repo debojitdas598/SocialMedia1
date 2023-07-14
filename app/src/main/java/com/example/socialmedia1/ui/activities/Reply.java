@@ -46,7 +46,8 @@ import java.util.Map;
 import java.util.Random;
 
 public class Reply extends AppCompatActivity {
-    private TextView postid,posttext,timestamp,likecount;
+    private TextView posttext,timestamp,likecount;
+    public TextView postid;
     private EditText replytext;
     private FirebaseFirestore firestore;
     private DatabaseReference databaseReference;
@@ -129,7 +130,9 @@ public class Reply extends AppCompatActivity {
         replytext = findViewById(R.id.replytextbox);
         recyclerView = findViewById(R.id.replyRV);
         postlikebutton = findViewById(R.id.likebtn);
-        adapter = new RVadapterReply(getApplicationContext(),dataList);
+        Intent intent = getIntent();
+        String postid =  intent.getStringExtra("postid");
+        adapter = new RVadapterReply(getApplicationContext(),dataList,postid);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
@@ -210,6 +213,11 @@ public class Reply extends AppCompatActivity {
         else{
             return formattedfullString;
         }
+    }
+
+    public String postIdreturner(){
+        Intent intent = getIntent();
+        return intent.getStringExtra("postid");
     }
 
 }

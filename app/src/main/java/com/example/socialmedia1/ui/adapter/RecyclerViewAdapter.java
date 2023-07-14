@@ -97,12 +97,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.likebtn.setOnClickListener(v -> {if(user!=null){
 
             if(holder.likeindicator == 1){
-                holder.likebtn.setImageResource(R.drawable.unlikebutton);
+                holder.likebtn.setImageResource(R.drawable.replyunlikebutton);
                 holder.likecount.setTextColor(Color.parseColor("#000000"));
                 holder.likeindicator =0;
             }
             else{
-                holder.likebtn.setImageResource(R.drawable.likedbutton);
+                holder.likebtn.setImageResource(R.drawable.replylikedbtn);
                 holder.likecount.setTextColor(Color.parseColor("#D90000"));
                 holder.likeindicator = 1;
             }
