@@ -59,17 +59,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DataItem item = data.get(position);
         holder.bind(item);
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseUser user = auth.getCurrentUser();
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+
             likehandler(holder);
             switchtoreply(holder);
+
     }
 
     private void switchtoreply(ViewHolder holder) {
         holder.cardView.setOnClickListener(v -> {
-
-
 
             Intent intent = new Intent(context, Reply.class);
             intent.putExtra("postid",holder.postid.getText());
@@ -98,6 +95,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         DocumentReference documentReference = firestore.collection("dsiblr").document(holder.postid.getText().toString());
         holder.likebtn.setOnClickListener(v -> {if(user!=null){
+
+            if(holder.likeindicator == 1){
+                holder.likebtn.setImageResource(R.drawable.unlikebutton);
+                holder.likecount.setTextColor(Color.parseColor("#000000"));
+                holder.likeindicator =0;
+            }
+            else{
+                holder.likebtn.setImageResource(R.drawable.likedbutton);
+                holder.likecount.setTextColor(Color.parseColor("#D90000"));
+                holder.likeindicator = 1;
+            }
+
             String userid = user.getUid();
             databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userid).child("likes");
             databaseReference.child(holder.postid.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -111,8 +120,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                                 Toast.makeText(context, "removed from likes", Toast.LENGTH_SHORT).show();
                                 long likes = Long.valueOf(holder.likecount.getText().toString())-1;
                                 holder.likecount.setText(String.valueOf(likes));
-                                holder.likebtn.setImageResource(R.drawable.unlikebutton);
-                                holder.likecount.setTextColor(Color.parseColor("#000000"));
+
 
                                 documentReference.update("likes", FieldValue.increment(-1)).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
@@ -141,8 +149,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                                 Toast.makeText(context, "added to likes", Toast.LENGTH_SHORT).show();
                                 long likes = Long.valueOf(holder.likecount.getText().toString())+1;
                                 holder.likecount.setText(String.valueOf(likes));
-                                holder.likebtn.setImageResource(R.drawable.likedbutton);
-                                holder.likecount.setTextColor(Color.parseColor("#D90000"));
+
 
                                 documentReference.update("likes", FieldValue.increment(1)).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
@@ -177,6 +184,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             Toast.makeText(context, "error", Toast.LENGTH_SHORT).show();
         }});
 
+
+        //sets liked posts as liked
         String userid = user.getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userid).child("likes");
         databaseReference.child(holder.postid.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {

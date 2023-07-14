@@ -82,13 +82,14 @@ public class Signup extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     String userId = mAuth.getCurrentUser().getUid();
 
-                                    // Save user details to the database
+                                    // Save user details to the realtime database
                                     databaseReference.child(userId).child("username").setValue(usernameTxt);
                                     databaseReference.child(userId).child("email").setValue(emailTxt);
                                     databaseReference.child(userId).child("password").setValue(passwordTxt);
                                     databaseReference.child(userId).child("likes").child("nullplaceholder").setValue(0);
                                     databaseReference.child(userId).child("replies").child("nullplaceholder").setValue(0);
                                     databaseReference.child(userId).child("posts").child("nullplaceholder").setValue(0);
+                                    databaseReference.child(userId).child("likedreplies").child("nullplaceholder").setValue(0);
 
 
                                     Toast.makeText(Signup.this, "Account Created.", Toast.LENGTH_SHORT).show();
