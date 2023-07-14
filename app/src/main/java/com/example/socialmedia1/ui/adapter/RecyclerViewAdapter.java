@@ -3,6 +3,7 @@ package com.example.socialmedia1.ui.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,8 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
+
+import pl.droidsonroids.gif.GifImageView;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private Context context;
@@ -97,14 +100,26 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.likebtn.setOnClickListener(v -> {if(user!=null){
 
             if(holder.likeindicator == 1){
-                holder.likebtn.setImageResource(R.drawable.replyunlikebutton);
+                holder.likebtn.setImageResource(R.drawable.unlikebutton);
                 holder.likecount.setTextColor(Color.parseColor("#000000"));
-                holder.likeindicator =0;
+                holder.likeindicator = 0;
+                long likes = Long.valueOf(holder.likecount.getText().toString())-1;
+                holder.likecount.setText(String.valueOf(likes));
             }
             else{
-                holder.likebtn.setImageResource(R.drawable.replylikedbtn);
+                holder.likebtn.setImageResource(R.drawable.likedbutton);
                 holder.likecount.setTextColor(Color.parseColor("#D90000"));
                 holder.likeindicator = 1;
+                holder.heartanim.setVisibility(View.VISIBLE);
+                long likes = Long.valueOf(holder.likecount.getText().toString())+1;
+                holder.likecount.setText(String.valueOf(likes));
+                long delayInMillis = 500; // Delay in ms
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        holder.heartanim.setVisibility(View.INVISIBLE);
+                    }
+                }, delayInMillis);
             }
 
             String userid = user.getUid();
@@ -118,8 +133,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                             @Override
                             public void onSuccess(Void unused) {
                                 Toast.makeText(context, "removed from likes", Toast.LENGTH_SHORT).show();
-                                long likes = Long.valueOf(holder.likecount.getText().toString())-1;
-                                holder.likecount.setText(String.valueOf(likes));
 
 
                                 documentReference.update("likes", FieldValue.increment(-1)).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -147,8 +160,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                             @Override
                             public void onSuccess(Void unused) {
                                 Toast.makeText(context, "added to likes", Toast.LENGTH_SHORT).show();
-                                long likes = Long.valueOf(holder.likecount.getText().toString())+1;
-                                holder.likecount.setText(String.valueOf(likes));
+
 
 
                                 documentReference.update("likes", FieldValue.increment(1)).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -221,6 +233,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         private TextView posttext;
         private TextView timestamptext;
         private ImageView likebtn,replybtn;
+        private GifImageView heartanim;
         private TextView likecount;
         private int likeindicator =0;
         private CardView cardView;
@@ -233,6 +246,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             replybtn = itemView.findViewById(R.id.replybtn);
             likecount = itemView.findViewById(R.id.totallikes);
             cardView = itemView.findViewById(R.id.cv);
+            heartanim = itemView.findViewById(R.id.heartanimation);
         }
         public void bind(DataItem item) {
             postid.setText(item.getText1());
