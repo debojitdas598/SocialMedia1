@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +41,7 @@ public class PostFragment extends Fragment {
     }
 
     private RecyclerView recyclerView;
+    SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerViewAdapter adapter;
     private List<DataItem> dataList;
     @Override
@@ -48,14 +50,25 @@ public class PostFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_post, container, false);
         recyclerView = view.findViewById(R.id.recyclerview);
         adapter = new RecyclerViewAdapter(requireContext(),dataList);
+        swipeRefreshLayout = view.findViewById(R.id.refresh);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter.setData(dataList);
         recyclerView.setAdapter(adapter);
         getData();
+        refreshScreen();
 
         return view;
     }
+
+    private void refreshScreen() {
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            getData();
+            adapter.notifyDataSetChanged();
+            swipeRefreshLayout.setRefreshing(false);
+        });
+    }
+
     private void getData() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference collectionRef = db.collection("dsiblr");

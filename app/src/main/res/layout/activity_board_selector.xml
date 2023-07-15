@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.activities.BoardSelector">
+    tools:context=".ui.activities.BoardSelector"
+    android:background="#F4E7C5"
+    >
 
     <TextView
         android:layout_width="match_parent"
@@ -29,6 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
                 android:id="@+id/dsiblrcard"
+                android:background="@color/white"
                 app:cardElevation="5dp"
                 app:cardCornerRadius="10dp">
 
@@ -47,7 +50,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
                 android:id="@+id/bmscecard"
-     android:layout_marginTop="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/white"
                 app:cardElevation="5dp"
                 app:cardCornerRadius="10dp">
 
@@ -60,11 +64,6 @@
                     android:layout_margin="12dp"/>
 
             </com.google.android.material.card.MaterialCardView>
-
-
-
-
-
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

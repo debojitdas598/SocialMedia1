@@ -4,15 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F4E7C5"
     android:orientation="vertical"
     tools:context=".ui.activities.Login">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/asset5"
+            android:layout_marginTop= "20dp"
+            android:layout_marginLeft="20dp"/>
+
+        <ImageView
+            android:layout_width="220dp"
+            android:layout_height="100dp"
+            android:src="@drawable/logo"
+            android:layout_marginTop = "100dp"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/asset6"
+            android:layout_marginTop = "20dp"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="E-Mail"
         android:inputType="textEmailAddress"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toTopOf="@+id/etPasswordLoginLayout"
         android:layout_marginHorizontal="40dp">
 
@@ -44,7 +69,7 @@
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
@@ -67,7 +92,24 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="100dp"
+        android:orientation="horizontal">
 
+
+
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/asset7"
+            android:layout_marginLeft="210dp"
+
+            />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 
 

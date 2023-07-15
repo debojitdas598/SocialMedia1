@@ -110,10 +110,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 holder.likebtn.setImageResource(R.drawable.likedbutton);
                 holder.likecount.setTextColor(Color.parseColor("#D90000"));
                 holder.likeindicator = 1;
-                holder.heartanim.setVisibility(View.VISIBLE);
                 long likes = Long.valueOf(holder.likecount.getText().toString())+1;
                 holder.likecount.setText(String.valueOf(likes));
-                long delayInMillis = 500; // Delay in ms
+
+               holder.heartanim.setVisibility(View.VISIBLE);
+                long delayInMillis = 700; // Delay in ms
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -160,8 +161,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                             @Override
                             public void onSuccess(Void unused) {
                                 Toast.makeText(context, "added to likes", Toast.LENGTH_SHORT).show();
-
-
 
                                 documentReference.update("likes", FieldValue.increment(1)).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
