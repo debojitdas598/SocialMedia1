@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background_yellow"
+
     tools:context=".ui.fragments.UserFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -15,10 +17,11 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="30dp"
             android:id="@+id/userid"
+            android:textColor="@color/black"
             android:text="userid"/>
 
         <com.google.android.material.card.MaterialCardView
@@ -56,6 +59,24 @@
 
         </com.google.android.material.card.MaterialCardView>
 
+<com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:id="@+id/yourreplies"
+            app:cardElevation="5dp"
+            app:cardCornerRadius="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Your Replies"
+                android:textSize="15dp"
+                android:textColor="@color/black"
+                android:layout_margin="12dp"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
          <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,7 +99,7 @@
          <com.google.android.material.card.MaterialCardView
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="400dp"
+            android:layout_marginTop="300dp"
             android:id="@+id/logout"
              android:layout_gravity="center"
             app:cardElevation="5dp"

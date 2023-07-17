@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,10 +81,11 @@ public class PostFragment extends Fragment {
                     String documentId = document.getId().toString();
                     String posttext = document.getString("post text");
                     Timestamp timestamp = document.getTimestamp("time");
+                    String  imageindicator =(document.getString("image"));
                     long likes = (long) document.get("likes");
-
                     String timeRequired = setDate(timestamp);
-                    dataList.add(new DataItem(documentId,posttext,timeRequired,likes));
+                    Log.d("TAG1122", "onSuccess: "+imageindicator);
+                    dataList.add(new DataItem(documentId,posttext,timeRequired,likes,imageindicator));
                 }
                 adapter.setData(dataList);
             }
@@ -99,7 +101,7 @@ public class PostFragment extends Fragment {
 
     //code to get todays and yesterdays date
 
-    private String setDate(Timestamp timestamp){
+    public static String setDate(Timestamp timestamp){
         Instant instant = timestamp.toDate().toInstant();
         LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
         DateTimeFormatter formatterfull = DateTimeFormatter.ofPattern("dd'th' MMM ,yy h:mm a");
