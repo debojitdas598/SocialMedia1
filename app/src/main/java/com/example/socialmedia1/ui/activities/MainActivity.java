@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -26,11 +27,16 @@ public class MainActivity extends AppCompatActivity {
     private ImageView settingsnavbutton;
     private BottomAppBar bottomAppBar;
     private FloatingActionButton fab;
+    String key ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        key = getIntent().getStringExtra("Collection Key");
+
+        Log.d("11", "onCreate: "+key);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user==null){
@@ -55,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void setUpFragment(Fragment fragment) {
+
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
@@ -66,7 +74,10 @@ public class MainActivity extends AppCompatActivity {
         PostDialogFragment editNameDialogFragment = PostDialogFragment.newInstance("Some Title");
         editNameDialogFragment.show(fm, "fragment_dialog");
     }
-
+    public String getMyData() {
+        String key1 = key;
+        return key1;
+    }
     public void finishActivity() {
         finish();
     }

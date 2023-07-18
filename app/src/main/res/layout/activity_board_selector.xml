@@ -12,7 +12,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Choose College Platform"
+        android:text="Choose Board"
         android:textSize="20dp"
         android:textColor="@color/black"
         android:layout_margin="20dp"/>
@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
-                android:id="@+id/dsiblrcard"
+                android:id="@+id/japcul"
                 android:background="@color/white"
                 app:cardElevation="5dp"
                 app:cardCornerRadius="10dp">
@@ -38,18 +38,18 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Dayananda Sagar Institutions, Bangalore"
+                    android:text="Japanese Culture"
                     android:textSize="15dp"
                     android:textColor="@color/black"
                     android:layout_margin="12dp"/>
 
             </com.google.android.material.card.MaterialCardView>
 
- <com.google.android.material.card.MaterialCardView
+        <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
-                android:id="@+id/bmscecard"
+                android:id="@+id/memes"
                 android:layout_marginTop="15dp"
                 android:background="@color/white"
                 app:cardElevation="5dp"
@@ -58,7 +58,83 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="BMS College of Engineering, Bangalore"
+                    android:text="Memes"
+                    android:textSize="15dp"
+                    android:textColor="@color/black"
+                    android:layout_margin="12dp"/>
+
+            </com.google.android.material.card.MaterialCardView>
+ <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:id="@+id/litp"
+                android:layout_marginTop="15dp"
+                android:background="@color/white"
+                app:cardElevation="5dp"
+                app:cardCornerRadius="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Literature Porn"
+                    android:textSize="15dp"
+                    android:textColor="@color/black"
+                    android:layout_margin="12dp"/>
+
+            </com.google.android.material.card.MaterialCardView>
+ <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:id="@+id/movpopcul"
+                android:layout_marginTop="15dp"
+                android:background="@color/white"
+                app:cardElevation="5dp"
+                app:cardCornerRadius="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Movie and Pop Culture"
+                    android:textSize="15dp"
+                    android:textColor="@color/black"
+                    android:layout_margin="12dp"/>
+
+            </com.google.android.material.card.MaterialCardView>
+ <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:id="@+id/nsfw"
+                android:layout_marginTop="15dp"
+                android:background="@color/white"
+                app:cardElevation="5dp"
+                app:cardCornerRadius="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="NSFW"
+                    android:textSize="15dp"
+                    android:textColor="@color/black"
+                    android:layout_margin="12dp"/>
+
+            </com.google.android.material.card.MaterialCardView>
+ <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:id="@+id/vidgames"
+                android:layout_marginTop="15dp"
+                android:background="@color/white"
+                app:cardElevation="5dp"
+                app:cardCornerRadius="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Video Games"
                     android:textSize="15dp"
                     android:textColor="@color/black"
                     android:layout_margin="12dp"/>

@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import com.example.socialmedia1.R;
+import com.example.socialmedia1.ui.activities.MainActivity;
 import com.example.socialmedia1.utils.VibrationUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -56,15 +57,15 @@ public class PostDialogFragment extends DialogFragment {
 
     private DatabaseReference databaseReference;
     private Uri imageURI;
-
+    private String key;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        MainActivity activity = (MainActivity) getActivity();
         firestore = FirebaseFirestore.getInstance();
-        String collectionPath = "dsiblr";
-        collectionRef = firestore.collection(collectionPath);
+         key = activity.getMyData();;
+        collectionRef = firestore.collection(key);
     }
     private void initializeViews(View view){
         posttxt = view.findViewById(R.id.etPost);
@@ -170,7 +171,7 @@ public class PostDialogFragment extends DialogFragment {
     private void createDocument(Map<String, Object> data, Context context) {
 
         docname = postName();
-       firestore.collection("dsiblr").document(docname)
+       firestore.collection(key).document(docname)
                .set(data)
                .addOnSuccessListener(new OnSuccessListener<Void>() {
                    @Override
@@ -191,7 +192,7 @@ public class PostDialogFragment extends DialogFragment {
                    }
                });
 
-        firestore.collection("dsiblr").document(docname).collection("replies").document("nulldoc_placeholder").set(new HashMap<>())
+        firestore.collection(key).document(docname).collection("replies").document("nulldoc_placeholder").set(new HashMap<>())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {

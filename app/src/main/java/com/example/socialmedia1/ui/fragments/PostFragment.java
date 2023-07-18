@@ -1,5 +1,6 @@
 package com.example.socialmedia1.ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.socialmedia1.R;
 import com.example.socialmedia1.models.DataItem;
+import com.example.socialmedia1.ui.activities.MainActivity;
 import com.example.socialmedia1.ui.adapter.RecyclerViewAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -45,18 +47,23 @@ public class PostFragment extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerViewAdapter adapter;
     private List<DataItem> dataList;
+    String key;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_post, container, false);
+        MainActivity activity = (MainActivity) getActivity();
+        key = activity.getMyData();
         recyclerView = view.findViewById(R.id.recyclerview);
-        adapter = new RecyclerViewAdapter(requireContext(),dataList);
+        adapter = new RecyclerViewAdapter(requireContext(),dataList,key);
         swipeRefreshLayout = view.findViewById(R.id.refresh);
+
+        Log.d("1212", "onCreateView: "+key);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter.setData(dataList);
         recyclerView.setAdapter(adapter);
-        getData();
+        getData(key);
         refreshScreen();
 
         return view;
@@ -64,15 +71,15 @@ public class PostFragment extends Fragment {
 
     private void refreshScreen() {
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            getData();
+            getData(key);
             adapter.notifyDataSetChanged();
             swipeRefreshLayout.setRefreshing(false);
         });
     }
 
-    private void getData() {
+    private void getData(String key) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference collectionRef = db.collection("dsiblr");
+        CollectionReference collectionRef = db.collection(key);
         collectionRef.orderBy("time", Query.Direction.DESCENDING).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {

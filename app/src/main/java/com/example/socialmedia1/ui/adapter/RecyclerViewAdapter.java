@@ -40,6 +40,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.Key;
 import java.util.List;
 
 import okhttp3.Call;
@@ -52,10 +53,12 @@ import pl.droidsonroids.gif.GifImageView;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private Context context;
     private DatabaseReference databaseReference;
+    String key;
     private List<DataItem> data;
-    public RecyclerViewAdapter(Context context, List<DataItem> data){
+    public RecyclerViewAdapter(Context context, List<DataItem> data, String key){
         this.context = context;
         this.data = data;
+        this.key = key;
     }
 
     public void setData(List<DataItem> data) {
@@ -67,6 +70,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.postcards, parent, false);
+        Log.d("recycler", "onCreateViewHolder: "+key);
         return new ViewHolder(view);
 
     }
@@ -157,7 +161,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        DocumentReference documentReference = firestore.collection("dsiblr").document(holder.postid.getText().toString());
+        DocumentReference documentReference = firestore.collection(key).document(holder.postid.getText().toString());
         holder.likebtn.setOnClickListener(v -> {if(user!=null){
 
             if(holder.likeindicator == 1){
