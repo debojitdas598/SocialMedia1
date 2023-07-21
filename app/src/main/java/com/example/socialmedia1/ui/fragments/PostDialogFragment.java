@@ -87,39 +87,36 @@ public class PostDialogFragment extends DialogFragment {
             imageSelector();
         });
 
-        addpost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String postText = posttxt.getText().toString().trim();
-                if (postText.isEmpty() && imageURI ==null) {
-                    Toast.makeText(view.getContext(), "Empty Post", Toast.LENGTH_SHORT).show();
-                    VibrationUtils.vibrate(getContext(), 200);
-                } else if(imageURI != null && !postText.isEmpty()){
-                    Map<String, Object> data = new HashMap<>();
-                    data.put("post text", postText);
-                    data.put("time", com.google.firebase.Timestamp.now());
-                    data.put("likes", 0);
-                    data.put("image","1");
-                    createDocument(data, view.getContext());
-                    uploadImage();
+        addpost.setOnClickListener(v -> {
+            String postText = posttxt.getText().toString().trim();
+            if (postText.isEmpty() && imageURI ==null) {
+                Toast.makeText(view.getContext(), "Empty Post", Toast.LENGTH_SHORT).show();
+                VibrationUtils.vibrate(getContext(), 200);
+            } else if(imageURI != null && !postText.isEmpty()){
+                Map<String, Object> data = new HashMap<>();
+                data.put("post text", postText);
+                data.put("time", com.google.firebase.Timestamp.now());
+                data.put("likes", 0);
+                data.put("image","1");
+                createDocument(data, view.getContext());
+                uploadImage();
 
-                } else if(imageURI != null && postText.isEmpty()){
-                    Map<String, Object> data = new HashMap<>();
-                    data.put("post text", "");
-                    data.put("time", com.google.firebase.Timestamp.now());
-                    data.put("likes", 0);
-                    data.put("image","1");
-                    createDocument(data, view.getContext());
-                    uploadImage();
+            } else if(imageURI != null && postText.isEmpty()){
+                Map<String, Object> data = new HashMap<>();
+                data.put("post text", "");
+                data.put("time", com.google.firebase.Timestamp.now());
+                data.put("likes", 0);
+                data.put("image","1");
+                createDocument(data, view.getContext());
+                uploadImage();
 
-                } else {
-                    Map<String, Object> data = new HashMap<>();
-                    data.put("post text", postText);
-                    data.put("time", com.google.firebase.Timestamp.now());
-                    data.put("likes", 0);
-                    data.put("image","0");
-                    createDocument(data, view.getContext());
-                }
+            } else {
+                Map<String, Object> data = new HashMap<>();
+                data.put("post text", postText);
+                data.put("time", com.google.firebase.Timestamp.now());
+                data.put("likes", 0);
+                data.put("image","0");
+                createDocument(data, view.getContext());
             }
         });
     }
@@ -127,17 +124,7 @@ public class PostDialogFragment extends DialogFragment {
     private void uploadImage() {
         String filename = docname;
         storageReference = FirebaseStorage.getInstance().getReference("posted_images/"+filename);
-        storageReference.putFile(imageURI).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                dismiss();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getActivity(), "Failed to upload image", Toast.LENGTH_SHORT).show();
-            }
-        });
+        storageReference.putFile(imageURI).addOnSuccessListener(taskSnapshot -> dismiss()).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to upload image", Toast.LENGTH_SHORT).show());
     }
 
     private void imageSelector() {
@@ -181,7 +168,7 @@ public class PostDialogFragment extends DialogFragment {
                        FirebaseAuth auth = FirebaseAuth.getInstance();
                        FirebaseUser user = auth.getCurrentUser();
                        String userId = user.getUid();
-                       databaseReference.child(userId).child("posts").child(docname).setValue(posttxt.getText().toString().trim());
+                       databaseReference.child(userId).child("posts").child(key).child(docname).setValue(posttxt.getText().toString().trim());
                        dismiss();
                    }
                })

@@ -82,11 +82,83 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             if(holder.imageindicator.equals("1")){
                 imageHandler(holder);
             }
-
             likehandler(holder);
             switchtoreply(holder);
+            deleteHandler(holder,position);
+
+
 
     }
+
+    private void deleteHandler(ViewHolder holder,int position) {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+        String userid = user.getUid();
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userid).child("posts").child(key);
+        databaseReference.child(holder.postid.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    holder.deletepost.setVisibility(View.VISIBLE);
+                    holder.postIndicator=1;
+                }
+                else
+                {
+                    holder.deletepost.setVisibility(View.GONE);
+                    holder.postIndicator=0;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        DocumentReference documentReference = firestore.collection(key).document(holder.postid.getText().toString());
+
+        holder.deletepost.setOnClickListener(v -> {
+            data.remove(position);
+            notifyItemRemoved(position);
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userid).child("posts").child(key);
+            databaseReference.child(holder.postid.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(snapshot.exists()){
+                        snapshot.getRef().removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(context, "removed from realtime", Toast.LENGTH_SHORT).show();
+                                documentReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Toast.makeText(context, "removed from firestore", Toast.LENGTH_SHORT).show();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(context, "couldnt remove from firestore", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(context, "couldnt remove from realtime", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        });
+
+    }
+
 
     private void imageHandler(ViewHolder holder) {
         holder.postimage.setVisibility(View.VISIBLE);
@@ -284,6 +356,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         });
     }
 
+    public void removeItem(int position){
+        data.remove(position);
+        notifyItemRemoved(position);
+    }
+
+
     @Override
     public int getItemCount() {
         return data != null ? data.size() : 0;
@@ -293,11 +371,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         private TextView postid;
         private TextView posttext;
         private TextView timestamptext;
-        private ImageView likebtn,replybtn,postimage;
+        private ImageView likebtn,replybtn,postimage,deletepost;
         private GifImageView heartanim;
         private TextView likecount;
         private String imageindicator = "0";
         private int likeindicator =0;
+        private int postIndicator = 0;
+
         private CardView cardView;
         public ViewHolder(@NonNull View itemView){
             super(itemView);
@@ -310,6 +390,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             cardView = itemView.findViewById(R.id.cv);
             heartanim = itemView.findViewById(R.id.heartanimation);
             postimage = itemView.findViewById(R.id.postimage);
+            deletepost = itemView.findViewById(R.id.delete);
 
         }
         public void bind(DataItem item) {
