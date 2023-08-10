@@ -1,6 +1,8 @@
 package com.example.socialmedia1.ui.fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,10 +15,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.socialmedia1.R;
 import com.example.socialmedia1.models.DataItem;
+import com.example.socialmedia1.ui.activities.BoardSelector;
 import com.example.socialmedia1.ui.activities.MainActivity;
 import com.example.socialmedia1.ui.adapter.RecyclerViewAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -47,13 +51,26 @@ public class PostFragment extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerViewAdapter adapter;
     private List<DataItem> dataList;
+    SharedPreferences sharedPreferences;
     String key;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_post, container, false);
         MainActivity activity = (MainActivity) getActivity();
+        sharedPreferences = requireActivity().getSharedPreferences("BoardSelected", Context.MODE_PRIVATE);
         key = activity.getMyData();
+        ImageView boards = view.findViewById(R.id.boardselector);
+        boards.setOnClickListener(v -> {
+           Intent intent = new Intent(getActivity(), BoardSelector.class);
+           startActivity(intent);
+        });
+        if(key==null){
+            key = return_previous_board_selection(sharedPreferences);
+        }
+        else{
+            store_previous_board_selection(key,sharedPreferences);
+        }
         recyclerView = view.findViewById(R.id.recyclerview);
         adapter = new RecyclerViewAdapter(requireContext(),dataList,key);
         swipeRefreshLayout = view.findViewById(R.id.refresh);
@@ -77,6 +94,21 @@ public class PostFragment extends Fragment {
         });
     }
 
+    private String store_previous_board_selection(String key,SharedPreferences sharedPreferences){
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        // Store the string
+        editor.putString("KEY_STRING", key);
+        editor.apply();
+        String ret = sharedPreferences.getString("KEY_STRING", "japcul");
+        return ret;
+    }
+    private String return_previous_board_selection(SharedPreferences sharedPreferences){
+
+        String ret = sharedPreferences.getString("KEY_STRING", "japcul");
+        return ret;
+    }
+
     private void getData(String key) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference collectionRef = db.collection(key);
@@ -93,6 +125,7 @@ public class PostFragment extends Fragment {
                     String timeRequired = setDate(timestamp);
                     Log.d("TAG1122", "onSuccess: "+imageindicator);
                     dataList.add(new DataItem(documentId,posttext,timeRequired,likes,imageindicator));
+                    store_previous_board_selection(key,sharedPreferences);
                 }
                 adapter.setData(dataList);
             }

@@ -125,28 +125,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if(snapshot.exists()){
-                        snapshot.getRef().removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Toast.makeText(context, "removed from realtime", Toast.LENGTH_SHORT).show();
-                                documentReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Toast.makeText(context, "removed from firestore", Toast.LENGTH_SHORT).show();
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(context, "couldnt remove from firestore", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(context, "couldnt remove from realtime", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        snapshot.getRef().removeValue().addOnSuccessListener(unused -> {
+                            Toast.makeText(context, "removed from realtime", Toast.LENGTH_SHORT).show();
+                            documentReference.delete().addOnSuccessListener(unused1 -> Toast.makeText(context, "removed from firestore", Toast.LENGTH_SHORT).show())
+                                    .addOnFailureListener(e -> Toast.makeText(context, "couldnt remove from firestore", Toast.LENGTH_SHORT).show());
+                        }).addOnFailureListener(e -> Toast.makeText(context, "couldnt remove from realtime", Toast.LENGTH_SHORT).show());
                     }
                 }
 
@@ -267,56 +250,24 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     //remove from likes if already liked
                     if(snapshot.exists()){
-                        snapshot.getRef().removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Toast.makeText(context, "removed from likes", Toast.LENGTH_SHORT).show();
+                        snapshot.getRef().removeValue().addOnSuccessListener(unused -> {
+                            Toast.makeText(context, "removed from likes", Toast.LENGTH_SHORT).show();
 
 
-                                documentReference.update("likes", FieldValue.increment(-1)).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
+                            documentReference.update("likes", FieldValue.increment(-1)).addOnSuccessListener(unused12 -> {
 //                                        Toast.makeText(context, "No error", Toast.LENGTH_SHORT).show();
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(context, "Some error", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(context, "couldnt remove from likes", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                            }).addOnFailureListener(e -> Toast.makeText(context, "Some error", Toast.LENGTH_SHORT).show());
+                        }).addOnFailureListener(e -> Toast.makeText(context, "couldnt remove from likes", Toast.LENGTH_SHORT).show());
                     }
                     else{
-                        databaseReference.child(holder.postid.getText().toString()).setValue(holder.posttext.getText().toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            //adding to likes if not liked
-                            @Override
-                            public void onSuccess(Void unused) {
+                        //adding to likes if not liked
+                        databaseReference.child(holder.postid.getText().toString()).setValue(holder.posttext.getText().toString()).addOnSuccessListener(unused -> {
 //                                Toast.makeText(context, "added to likes", Toast.LENGTH_SHORT).show();
 
-                                documentReference.update("likes", FieldValue.increment(1)).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
+                            documentReference.update("likes", FieldValue.increment(1)).addOnSuccessListener(unused1 -> {
 //                                        Toast.makeText(context, "No error", Toast.LENGTH_SHORT).show();
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(context, "Some error", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(context, "couldnt add to likes", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                            }).addOnFailureListener(e -> Toast.makeText(context, "Some error", Toast.LENGTH_SHORT).show());
+                        }).addOnFailureListener(e -> Toast.makeText(context, "couldnt add to likes", Toast.LENGTH_SHORT).show());
                     }
                 }
                 @Override
@@ -348,7 +299,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     holder.likeindicator = 0;
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 

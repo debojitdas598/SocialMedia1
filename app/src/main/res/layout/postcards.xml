@@ -60,7 +60,10 @@
             android:layout_height="400dp"
             android:id="@+id/postimage"
             android:layout_margin="10dp"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
+
+
+
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
