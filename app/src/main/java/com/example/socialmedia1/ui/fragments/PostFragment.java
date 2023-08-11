@@ -16,6 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.socialmedia1.R;
@@ -41,6 +43,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+
+
 public class PostFragment extends Fragment {
 
     public PostFragment() {
@@ -48,10 +52,13 @@ public class PostFragment extends Fragment {
     }
 
     private RecyclerView recyclerView;
+    LinearLayout loading;
+    private TextView feedtitle;
     SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerViewAdapter adapter;
     private List<DataItem> dataList;
     SharedPreferences sharedPreferences;
+
     String key;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,15 +68,19 @@ public class PostFragment extends Fragment {
         sharedPreferences = requireActivity().getSharedPreferences("BoardSelected", Context.MODE_PRIVATE);
         key = activity.getMyData();
         ImageView boards = view.findViewById(R.id.boardselector);
+        loading = view.findViewById(R.id.loading);
+        feedtitle = view.findViewById(R.id.feedtitle);
         boards.setOnClickListener(v -> {
            Intent intent = new Intent(getActivity(), BoardSelector.class);
            startActivity(intent);
         });
         if(key==null){
             key = return_previous_board_selection(sharedPreferences);
+            feedtitle.setText(feedTitleSetter(key));
         }
         else{
             store_previous_board_selection(key,sharedPreferences);
+            feedtitle.setText(feedTitleSetter(key));
         }
         recyclerView = view.findViewById(R.id.recyclerview);
         adapter = new RecyclerViewAdapter(requireContext(),dataList,key);
@@ -92,6 +103,25 @@ public class PostFragment extends Fragment {
             adapter.notifyDataSetChanged();
             swipeRefreshLayout.setRefreshing(false);
         });
+    }
+
+    private String feedTitleSetter(String key){
+        switch (key){
+            case "japcul":
+                return "Japanese Culture";
+            case "litp":
+                return "Literature Porn";
+            case "memes":
+                return "Memes";
+            case "nsfw":
+                return "NSFW";
+            case "movpopcul":
+                return "Movies & Pop culture";
+            case "vidgames":
+                return "Video Games";
+            default:
+                return "ERROR 404";
+        }
     }
 
     private String store_previous_board_selection(String key,SharedPreferences sharedPreferences){
@@ -126,6 +156,8 @@ public class PostFragment extends Fragment {
                     Log.d("TAG1122", "onSuccess: "+imageindicator);
                     dataList.add(new DataItem(documentId,posttext,timeRequired,likes,imageindicator));
                     store_previous_board_selection(key,sharedPreferences);
+                    loading.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
                 }
                 adapter.setData(dataList);
             }

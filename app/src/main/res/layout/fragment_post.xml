@@ -18,31 +18,61 @@
             android:layout_height="wrap_content"
             android:text="Feed"
             android:textSize="20dp"
+            android:layout_weight="1"
             android:layout_marginTop="15dp"
+            android:id="@+id/feedtitle"
             android:layout_marginLeft="15dp"
             android:textColor="@color/black"/>
 
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginLeft="270dp"
+            android:layout_weight="0.2"
             android:layout_marginTop="10dp"
             android:id="@+id/boardselector"
-            android:src="@drawable/chaticon"/>
+            android:src="@drawable/boardselector"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+<FrameLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:id="@+id/loading">
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/loading"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Loading..."
+        android:layout_gravity="center"
+        android:textSize="20dp"
+        />
+</LinearLayout>
 
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:id="@+id/refresh">
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
+
             android:id="@+id/recyclerview"
             android:layout_margin="15dp"/>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</FrameLayout>
+
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>
