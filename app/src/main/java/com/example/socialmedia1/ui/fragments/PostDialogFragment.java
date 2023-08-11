@@ -64,7 +64,7 @@ public class PostDialogFragment extends DialogFragment {
         super.onCreate(savedInstanceState);
         MainActivity activity = (MainActivity) getActivity();
         firestore = FirebaseFirestore.getInstance();
-         key = activity.getMyData();;
+        key = activity.getMyData();;
         collectionRef = firestore.collection(key);
     }
     private void initializeViews(View view){
@@ -73,7 +73,6 @@ public class PostDialogFragment extends DialogFragment {
         addimage = view.findViewById(R.id.addimagebtn);
         uploadingimage = view.findViewById(R.id.uploadedimage);
         cancelimage = view.findViewById(R.id.cancelimage);
-
     }
 
     private void onClickfunctions(View view){

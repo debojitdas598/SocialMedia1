@@ -103,7 +103,7 @@ public class PostFragment extends Fragment {
         String ret = sharedPreferences.getString("KEY_STRING", "japcul");
         return ret;
     }
-    private String return_previous_board_selection(SharedPreferences sharedPreferences){
+    public String return_previous_board_selection(SharedPreferences sharedPreferences){
 
         String ret = sharedPreferences.getString("KEY_STRING", "japcul");
         return ret;
