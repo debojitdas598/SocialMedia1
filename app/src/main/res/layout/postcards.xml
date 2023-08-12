@@ -55,12 +55,40 @@
                 android:text="POST"
              android:id="@+id/posttext"
              android:layout_marginTop="20dp"/>
-        <ImageView
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:id="@+id/postimage"
-            android:layout_margin="10dp"
-            android:visibility="gone"/>
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/loadingimagelayout"
+                android:orientation="vertical"
+                android:layout_gravity="center">
+
+                <pl.droidsonroids.gif.GifImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/loadingimage"
+                    android:layout_gravity="center"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="Loading please wait... \n (Meanwhile Enjoy this cute anime girl)"
+                    android:layout_gravity="center"
+                    />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:id="@+id/postimage"
+                android:layout_margin="10dp"
+                android:visibility="visible"/>
+
+        </FrameLayout>
+
 
 
 

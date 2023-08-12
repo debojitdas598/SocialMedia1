@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -58,6 +59,7 @@ public class PostFragment extends Fragment {
     private RecyclerViewAdapter adapter;
     private List<DataItem> dataList;
     SharedPreferences sharedPreferences;
+    LinearLayoutCompat linearLayoutCompat;
 
     String key;
     @Override
@@ -85,6 +87,7 @@ public class PostFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerview);
         adapter = new RecyclerViewAdapter(requireContext(),dataList,key);
         swipeRefreshLayout = view.findViewById(R.id.refresh);
+
 
         Log.d("1212", "onCreateView: "+key);
 

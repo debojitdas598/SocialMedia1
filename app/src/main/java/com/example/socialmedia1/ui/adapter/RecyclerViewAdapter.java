@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -166,8 +167,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         InputStream inputStream = response.body().byteStream();
                         Log.d("TAG1212", "onResponse: "+inputStream);
                         Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                        holder.postimage.setVisibility(View.VISIBLE);
 
+                        holder.linearLayoutCompat.setVisibility(View.INVISIBLE);
+                        holder.postimage.setVisibility(View.VISIBLE);
                         new Handler(Looper.getMainLooper()).post(() -> holder.postimage.setImageBitmap(bitmap));
 
 
@@ -325,6 +327,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         private TextView postid;
         private TextView posttext;
         private TextView timestamptext;
+        private LinearLayoutCompat linearLayoutCompat;
         private ImageView likebtn,replybtn,postimage,deletepost;
         private GifImageView heartanim;
         private TextView likecount;
@@ -345,7 +348,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             heartanim = itemView.findViewById(R.id.heartanimation);
             postimage = itemView.findViewById(R.id.postimage);
             deletepost = itemView.findViewById(R.id.delete);
-
+            linearLayoutCompat = itemView.findViewById(R.id.loadingimagelayout);
         }
         public void bind(DataItem item) {
             postid.setText(item.getText1());
@@ -355,6 +358,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             imageindicator = String.valueOf(item.getText5());
             if(String.valueOf(item.getText5()).equals("0")){
                 postimage.setVisibility(View.GONE);
+                linearLayoutCompat.setVisibility(View.GONE);
             }
 
         }

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -44,6 +45,8 @@ public class UserPosts extends AppCompatActivity {
     private RecyclerView recyclerView;
     private UserPostsRVadapter adapter;
     private List<DataItemUserPosts> dataList;
+    SwipeRefreshLayout swipeRefreshLayout;
+    List<String> data;
     String key;
     String[] keys = {"japcul","memes","nsfw","vidgames","movpopcul","litp"};
     @Override
@@ -54,11 +57,21 @@ public class UserPosts extends AppCompatActivity {
         recyclerView = findViewById(R.id.yourpostsrecyclerview);
         adapter = new UserPostsRVadapter(getApplicationContext(),dataList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
+        swipeRefreshLayout = findViewById(R.id.swiperefreshuserposts);
         realtimeDBdata();
         adapter.setData(dataList);
 
         recyclerView.setAdapter(adapter);
+        refreshScreen();
+    }
+
+    private void refreshScreen() {
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            realtimeDBdata();
+            getdata(data,keys);
+            adapter.notifyDataSetChanged();
+            swipeRefreshLayout.setRefreshing(false);
+        });
     }
 
     private void getdata(List<String> realtimeDatabase, String[] keys) {
@@ -131,7 +144,7 @@ public class UserPosts extends AppCompatActivity {
         }
     }
     private void realtimeDBdata(){
-        List<String> data = new ArrayList<>();
+        data = new ArrayList<>();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         String userid = user.getUid();
