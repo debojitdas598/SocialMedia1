@@ -287,6 +287,7 @@ public class UserPostsRVadapter extends RecyclerView.Adapter<UserPostsRVadapter.
             intent.putExtra("timestamp",holder.timestamptext.getText());
             intent.putExtra("likeindicator",holder.likeindicator);
             intent.putExtra("imageindicator",holder.imageindicator);
+            intent.putExtra("key",holder.key);
             context.startActivity(intent);
         });
         holder.replybtn.setOnClickListener(v -> {
@@ -298,6 +299,7 @@ public class UserPostsRVadapter extends RecyclerView.Adapter<UserPostsRVadapter.
             intent.putExtra("timestamp",holder.timestamptext.getText());
             intent.putExtra("likeindicator",holder.likeindicator);
             intent.putExtra("imageindicator",holder.imageindicator);
+            intent.putExtra("key",holder.key);
             context.startActivity(intent);
         });
 

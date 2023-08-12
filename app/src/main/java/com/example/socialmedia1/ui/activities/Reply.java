@@ -31,10 +31,16 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -71,6 +77,8 @@ public class Reply extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RVadapterReply adapter;
     private ImageView postlikebutton,postimage;
+    int likeindicator;
+    String key;
     String postIDtext, postImageIndicator;
     private List<ReplyDataItem> dataList;
     @Override
@@ -81,7 +89,65 @@ public class Reply extends AppCompatActivity {
         settingInitialValues();
         onClicking();
         getData();
+        likehandler();
 
+    }
+
+    private void likehandler(){
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        DocumentReference documentReference = firestore.collection(key).document(postIDtext);
+        postlikebutton.setOnClickListener(v -> {
+            if(likeindicator == 1){
+                postlikebutton.setImageResource(R.drawable.unlikebutton);
+                likecount.setTextColor(Color.parseColor("#000000"));
+                likeindicator = 0;
+                long likes = Long.valueOf(likecount.getText().toString())-1;
+                likecount.setText(String.valueOf(likes));
+            }
+            else{
+                postlikebutton.setImageResource(R.drawable.likedbutton);
+                likecount.setTextColor(Color.parseColor("#D90000"));
+                likeindicator = 1;
+                long likes = Long.valueOf(likecount.getText().toString())+1;
+                likecount.setText(String.valueOf(likes));
+            }
+            String userid = user.getUid();
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(userid).child("likes");
+            databaseReference.child(postIDtext).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(snapshot.exists()){
+                        snapshot.getRef().removeValue().addOnSuccessListener(unused -> {
+                            documentReference.update("likes", FieldValue.increment(-1)).addOnSuccessListener(unused1 -> {
+
+                            }).addOnFailureListener(e -> {
+
+                            });
+                        }).addOnFailureListener(e -> {
+
+                        });
+                    }
+                    else {
+                        databaseReference.child(postIDtext).setValue(postIDtext).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                documentReference.update("likes",FieldValue.increment(1)).addOnSuccessListener(unused12 -> {
+
+                                }).addOnFailureListener(e -> {});
+                            }
+                        }).addOnFailureListener(e -> {
+                        });
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        });
 
     }
 
@@ -148,15 +214,15 @@ public class Reply extends AppCompatActivity {
         likecount = findViewById(R.id.totallikes);
         replytext = findViewById(R.id.replytextbox);
         recyclerView = findViewById(R.id.replyRV);
-        postlikebutton = findViewById(R.id.likebtn);
+        postlikebutton = findViewById(R.id.likebtnreply);
         postimage = findViewById(R.id.postimage);
         Intent intent = getIntent();
         postIDtext =  intent.getStringExtra("postid");
         postImageIndicator = intent.getStringExtra("imageindicator");
-
+        key = intent.getStringExtra("key");
         Log.d("imageurl", "initializer: "+postImageIndicator);
         if(postImageIndicator.equals("1")){
-            imageHandler(postImageIndicator);
+            imageHandler();
         }
         else{
             postimage.setVisibility(View.GONE);
@@ -165,7 +231,7 @@ public class Reply extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
-    private void imageHandler(String imageindicator){
+    private void imageHandler(){
 
         postimage.setVisibility(View.VISIBLE);
         FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -189,9 +255,7 @@ public class Reply extends AppCompatActivity {
                         Log.d("TAG1212", "onResponse: "+inputStream);
                         Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                         postimage.setVisibility(View.VISIBLE);
-
                         new Handler(Looper.getMainLooper()).post(() -> postimage.setImageBitmap(bitmap));
-
 
                     }
                     else {
@@ -254,7 +318,7 @@ public class Reply extends AppCompatActivity {
             posttext.setText(intent.getStringExtra("posttext"));
             timestamp.setText(intent.getStringExtra("timestamp"));
             likecount.setText(intent.getStringExtra("likes"));
-            int likeindicator = intent.getIntExtra("likeindicator",0);
+            likeindicator = intent.getIntExtra("likeindicator",0);
             if(likeindicator ==1){
                 postlikebutton.setImageResource(R.drawable.likedbutton);
                 likecount.setTextColor(Color.parseColor("#D90000"));

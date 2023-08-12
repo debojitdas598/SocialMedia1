@@ -199,6 +199,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             intent.putExtra("timestamp",holder.timestamptext.getText());
             intent.putExtra("likeindicator",holder.likeindicator);
             intent.putExtra("imageindicator",holder.imageindicator);
+            intent.putExtra("key",key);
             context.startActivity(intent);
         });
         holder.replybtn.setOnClickListener(v -> {
@@ -209,6 +210,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             intent.putExtra("timestamp",holder.timestamptext.getText());
             intent.putExtra("likeindicator",holder.likeindicator);
             intent.putExtra("imageindicator",holder.imageindicator);
+            intent.putExtra("key",key);
             context.startActivity(intent);
         });
 
