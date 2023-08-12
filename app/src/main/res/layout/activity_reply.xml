@@ -65,6 +65,15 @@
                 android:id="@+id/posttext"
                 android:layout_marginTop="20dp"/>
 
+            <ImageView
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:visibility="gone"
+                android:id="@+id/postimage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

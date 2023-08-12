@@ -12,8 +12,10 @@ import android.widget.Toast;
 
 import com.example.socialmedia1.R;
 import com.example.socialmedia1.models.DataItem;
+import com.example.socialmedia1.models.DataItemUserPosts;
 import com.example.socialmedia1.ui.adapter.UserPostsRVadapter;
 import com.example.socialmedia1.ui.fragments.PostFragment;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,6 +30,11 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +42,8 @@ public class UserLikes extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private UserPostsRVadapter adapter;
-    private List<DataItem> dataList;
+    private List<DataItemUserPosts> dataList;
+    String[] keys = {"japcul","memes","nsfw","vidgames","movpopcul","litp"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,48 +52,77 @@ public class UserLikes extends AppCompatActivity {
         recyclerView = findViewById(R.id.yourlikesrecyclerview);
         adapter = new UserPostsRVadapter(getApplicationContext(),dataList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
         realtimeDBdata();
         adapter.setData(dataList);
-
         recyclerView.setAdapter(adapter);
     }
 
-    private void getdata(List<String> realtimeDatabase) {
+    private void getdata(List<String> realtimeDatabase, String[] keys) {
         Log.d("helloji", "getdata: "+realtimeDatabase);
+        List<DataItemUserPosts> dataList = new ArrayList<>();
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        CollectionReference collectionRef = firestore.collection("dsiblr"); // Replace with your actual collection name
-        if(!realtimeDatabase.isEmpty()){
-            Query query = collectionRef.whereIn("post text",realtimeDatabase);
-            query.get().addOnCompleteListener(task -> {
-                if(task.isSuccessful()){
+        for(String key : keys){
+            CollectionReference collectionRef = firestore.collection(key); // Replace with your actual collection name
+            if(!realtimeDatabase.isEmpty()){
+                for(String postidtext : realtimeDatabase){
+                    firestore.collection(key).document(postidtext).get().addOnSuccessListener(documentSnapshot -> {
+                        if(documentSnapshot.exists()){
+                            if(!documentSnapshot.getId().equals("nullplaceholder")){
+                                String documentId = documentSnapshot.getId().toString();
+                                String posttext = documentSnapshot.getString("post text");
+                                Timestamp timestamp = documentSnapshot.getTimestamp("time");
+                                String  imageindicator =(documentSnapshot.getString("image"));
+                                long likes = (long) documentSnapshot.get("likes");
+                                String timeRequired = setDate(timestamp);
+                                dataList.add(new DataItemUserPosts(documentId,posttext,timeRequired,likes,imageindicator,key));
 
-                    QuerySnapshot querySnapshot = task.getResult();
-                    if(querySnapshot!=null){
+                            }
+                            adapter.setData(dataList);
+                        }
 
-                        List<DataItem> dataList = new ArrayList<>();
-                        for(QueryDocumentSnapshot documentSnapshot : querySnapshot){
-                            Toast.makeText(this, "working almost", Toast.LENGTH_SHORT).show();
-                            String posttext = documentSnapshot.getString("post text");
-                            String postid = documentSnapshot.getId();
-                            Timestamp timestamp = documentSnapshot.getTimestamp("time");
-                            long likes = (long) documentSnapshot.get("likes");
-                            String imageindicator = (documentSnapshot.getString("image"));
-                            String timeRequired = PostFragment.setDate(timestamp);
-                            dataList.add(new DataItem(postid,posttext,timeRequired,likes,imageindicator));
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
 
                         }
-                        adapter.setData(dataList);
-                    }
-                } else{
-                    Toast.makeText(this, "Error fetching data", Toast.LENGTH_SHORT).show();
+
+                    });
+
                 }
-            });
-        }
-        else {
-            Toast.makeText(this, "errorddd", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(this, "errorddd", Toast.LENGTH_SHORT).show();
+            }
         }
 
+
+    }
+
+    public static String setDate(Timestamp timestamp){
+        Instant instant = timestamp.toDate().toInstant();
+        LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        DateTimeFormatter formatterfull = DateTimeFormatter.ofPattern("dd'th' MMM ,yy h:mm a");
+        DateTimeFormatter formatterdate = DateTimeFormatter.ofPattern("dd'th' MMM ,yy");
+        DateTimeFormatter formattertime = DateTimeFormatter.ofPattern("h:mm a");
+
+        String formattedfullString = dateTime.format(formatterfull);
+        String formatteddateString = dateTime.format(formatterdate);
+        String formattedtimeString = dateTime.format(formattertime);
+
+        LocalDate today = LocalDate.now();
+        LocalDate yesterday = today.minusDays(1);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd'th' MMM, yy");
+        String todayStr = today.format(formatterdate);
+        String yesterdayStr = yesterday.format(formatterdate);
+        if(todayStr.equals(formatteddateString)){
+            return "Today at " + formattedtimeString;
+        }
+        else if(yesterdayStr.equals(formatteddateString)){
+            return "Yesterday at "+formattedtimeString;
+        }
+        else{
+            return formattedfullString;
+        }
     }
 
     private void realtimeDBdata(){
@@ -101,12 +138,14 @@ public class UserLikes extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     String posttext = postSnapshot.getValue().toString();
+                    String postid  = postSnapshot.getKey();
                     Log.d("TAG", "onDataChange: "+posttext);
-                    data.add(posttext);
+                    data.add(postid);
                 }
-                getdata(data);
-                Log.d("helloji", "onDataChange: "+data);
 
+
+                Log.d("helloji", "onDataChange: "+data);
+                getdata(data,keys);
             }
 
             @Override

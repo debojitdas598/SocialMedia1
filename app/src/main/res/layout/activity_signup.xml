@@ -8,12 +8,26 @@
     android:background="@color/background_yellow"
     tools:context=".ui.activities.Signup">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/asset5"
+        android:paddingLeft="20dp"
+        android:layout_marginTop = "20dp"/>
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/titlename"
+        />
+
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="E-Mail"
         android:inputType="textEmailAddress"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="40dp"
         app:layout_constraintBottom_toTopOf="@+id/etPasswordLoginLayout"
         android:layout_marginHorizontal="40dp">
 

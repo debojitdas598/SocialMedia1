@@ -123,7 +123,9 @@ public class PostDialogFragment extends DialogFragment {
     private void uploadImage() {
         String filename = docname;
         storageReference = FirebaseStorage.getInstance().getReference("posted_images/"+filename);
-        storageReference.putFile(imageURI).addOnSuccessListener(taskSnapshot -> dismiss()).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to upload image", Toast.LENGTH_SHORT).show());
+        storageReference.putFile(imageURI)
+                .addOnSuccessListener(taskSnapshot -> dismiss()).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to upload image", Toast.LENGTH_SHORT)
+                        .show());
     }
 
     private void imageSelector() {
@@ -167,7 +169,7 @@ public class PostDialogFragment extends DialogFragment {
                        FirebaseAuth auth = FirebaseAuth.getInstance();
                        FirebaseUser user = auth.getCurrentUser();
                        String userId = user.getUid();
-                       databaseReference.child(userId).child("posts").child(key).child(docname).setValue(posttxt.getText().toString().trim());
+                       databaseReference.child(userId).child("posts").child(key).child(docname).setValue(key);
                        dismiss();
                    }
                })

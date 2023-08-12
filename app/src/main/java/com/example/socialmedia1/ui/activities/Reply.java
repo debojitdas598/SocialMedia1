@@ -6,10 +6,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,7 +38,13 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageException;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -45,6 +56,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class Reply extends AppCompatActivity {
     private TextView posttext,timestamp,likecount;
     public TextView postid;
@@ -53,7 +70,8 @@ public class Reply extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private RecyclerView recyclerView;
     private RVadapterReply adapter;
-    private ImageView postlikebutton;
+    private ImageView postlikebutton,postimage;
+    String postIDtext, postImageIndicator;
     private List<ReplyDataItem> dataList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +133,7 @@ public class Reply extends AppCompatActivity {
 
     }
 
+
     private String replyName(){
         Random random = new Random();
         String randomName = "Repli"+String.valueOf(random.nextInt(90000) + 10000);
@@ -130,10 +149,65 @@ public class Reply extends AppCompatActivity {
         replytext = findViewById(R.id.replytextbox);
         recyclerView = findViewById(R.id.replyRV);
         postlikebutton = findViewById(R.id.likebtn);
+        postimage = findViewById(R.id.postimage);
         Intent intent = getIntent();
-        String postid =  intent.getStringExtra("postid");
-        adapter = new RVadapterReply(getApplicationContext(),dataList,postid);
+        postIDtext =  intent.getStringExtra("postid");
+        postImageIndicator = intent.getStringExtra("imageindicator");
+
+        Log.d("imageurl", "initializer: "+postImageIndicator);
+        if(postImageIndicator.equals("1")){
+            imageHandler(postImageIndicator);
+        }
+        else{
+            postimage.setVisibility(View.GONE);
+        }
+        adapter = new RVadapterReply(getApplicationContext(),dataList,postIDtext);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+    }
+    private void imageHandler(String imageindicator){
+
+        postimage.setVisibility(View.VISIBLE);
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference();
+        StorageReference fileRef = storageReference.child("posted_images").child(postIDtext);
+        fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
+            String downloadURL = uri.toString(); //URL required to fetch the image file
+            Log.d("tag1212", "imageHandler: "+downloadURL);
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder().url(downloadURL).build();
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Toast.makeText(getApplicationContext(), "Error while downloading the image", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if(response.isSuccessful()){
+                        InputStream inputStream = response.body().byteStream();
+                        Log.d("TAG1212", "onResponse: "+inputStream);
+                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                        postimage.setVisibility(View.VISIBLE);
+
+                        new Handler(Looper.getMainLooper()).post(() -> postimage.setImageBitmap(bitmap));
+
+
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(), "Error while parsing inputstream.", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            });
+
+
+
+        }).addOnFailureListener(e -> {
+            if(e instanceof StorageException){
+                StorageException storageException = (StorageException) e;
+            }
+        });
 
     }
 
@@ -168,7 +242,10 @@ public class Reply extends AppCompatActivity {
             }
         });
 
+
+
     }
+
 
     private void settingInitialValues() {
         Intent intent = getIntent();
@@ -220,4 +297,8 @@ public class Reply extends AppCompatActivity {
         return intent.getStringExtra("postid");
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

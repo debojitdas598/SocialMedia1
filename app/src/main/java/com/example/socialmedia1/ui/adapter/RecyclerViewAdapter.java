@@ -54,6 +54,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private Context context;
     private DatabaseReference databaseReference;
     String key;
+    String downloadURL = "null";
     private List<DataItem> data;
     public RecyclerViewAdapter(Context context, List<DataItem> data, String key){
         this.context = context;
@@ -149,7 +150,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         StorageReference storageReference = storage.getReference();
         StorageReference fileRef = storageReference.child("posted_images").child(holder.postid.getText().toString());
         fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
-            String downloadURL = uri.toString(); //URL required to fetch the image file
+            downloadURL = uri.toString(); //URL required to fetch the image file
             Log.d("tag1212", "imageHandler: "+downloadURL);
             OkHttpClient client = new OkHttpClient();
             Request request = new Request.Builder().url(downloadURL).build();
@@ -197,7 +198,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             intent.putExtra("likes",holder.likecount.getText());
             intent.putExtra("timestamp",holder.timestamptext.getText());
             intent.putExtra("likeindicator",holder.likeindicator);
-
+            intent.putExtra("imageindicator",holder.imageindicator);
             context.startActivity(intent);
         });
         holder.replybtn.setOnClickListener(v -> {
@@ -207,6 +208,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             intent.putExtra("likes",holder.likecount.getText());
             intent.putExtra("timestamp",holder.timestamptext.getText());
             intent.putExtra("likeindicator",holder.likeindicator);
+            intent.putExtra("imageindicator",holder.imageindicator);
             context.startActivity(intent);
         });
 
