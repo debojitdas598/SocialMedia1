@@ -2,6 +2,7 @@ package com.example.socialmedia1.ui.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -44,6 +45,7 @@ public class UserPosts extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private UserPostsRVadapter adapter;
+
     private List<DataItemUserPosts> dataList;
     SwipeRefreshLayout swipeRefreshLayout;
     List<String> data;
@@ -58,6 +60,7 @@ public class UserPosts extends AppCompatActivity {
         adapter = new UserPostsRVadapter(getApplicationContext(),dataList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         swipeRefreshLayout = findViewById(R.id.swiperefreshuserposts);
+
         realtimeDBdata();
         adapter.setData(dataList);
 

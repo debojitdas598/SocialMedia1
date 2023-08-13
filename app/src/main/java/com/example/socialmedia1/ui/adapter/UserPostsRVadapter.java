@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -328,7 +329,7 @@ public class UserPostsRVadapter extends RecyclerView.Adapter<UserPostsRVadapter.
                         Log.d("TAG1212", "onResponse: "+inputStream);
                         Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                         holder.postimage.setVisibility(View.VISIBLE);
-
+                        new Handler(Looper.getMainLooper()).post(() -> holder.linearLayoutCompat.setVisibility(View.INVISIBLE));
                         new Handler(Looper.getMainLooper()).post(() -> holder.postimage.setImageBitmap(bitmap));
 
 
@@ -361,6 +362,7 @@ public class UserPostsRVadapter extends RecyclerView.Adapter<UserPostsRVadapter.
         private TextView posttext;
         private TextView timestamptext;
         private ImageView likebtn,replybtn,postimage,deletepost;
+        private LinearLayoutCompat linearLayoutCompat;
         private GifImageView heartanim;
         private TextView likecount;
         private int likeindicator =0;
@@ -381,6 +383,7 @@ public class UserPostsRVadapter extends RecyclerView.Adapter<UserPostsRVadapter.
             heartanim = itemView.findViewById(R.id.heartanimation);
             postimage = itemView.findViewById(R.id.postimage);
             deletepost = itemView.findViewById(R.id.delete);
+            linearLayoutCompat = itemView.findViewById(R.id.loadingimagelayout);
         }
         public void bind(DataItemUserPosts item) {
             postid.setText(item.getText1());
@@ -391,6 +394,7 @@ public class UserPostsRVadapter extends RecyclerView.Adapter<UserPostsRVadapter.
             key = String.valueOf(item.getText6());
             if(String.valueOf(item.getText5()).equals("0")){
                 postimage.setVisibility(View.GONE);
+                linearLayoutCompat.setVisibility(View.GONE);
             }
         }
     }

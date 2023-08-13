@@ -168,7 +168,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         Log.d("TAG1212", "onResponse: "+inputStream);
                         Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
 
-                        holder.linearLayoutCompat.setVisibility(View.INVISIBLE);
+                        new Handler(Looper.getMainLooper()).post(() -> holder.linearLayoutCompat.setVisibility(View.INVISIBLE));
+
                         holder.postimage.setVisibility(View.VISIBLE);
                         new Handler(Looper.getMainLooper()).post(() -> holder.postimage.setImageBitmap(bitmap));
 
@@ -176,12 +177,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     }
                     else {
                         Toast.makeText(context, "Error while parsing inputstream.", Toast.LENGTH_SHORT).show();
-
                     }
                 }
             });
-
-
 
         }).addOnFailureListener(e -> {
             if(e instanceof StorageException){
